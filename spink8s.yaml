@@ -29,7 +29,7 @@ spec:
   ports:
     - name: testport
       port: 8000
-      targetPort: 8000
+      targetPort: 80
   selector:
     app: hello
   type: LoadBalancer
