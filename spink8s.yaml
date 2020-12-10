@@ -16,7 +16,7 @@ spec:
       name: hello
     spec:
       containers:
-        - image: spinkube.azurecr.io/spinnaker
+        - image: spinkube.azurecr.io/spinnaker:${trigger['tag']}
           name: hello
           ports:
             - containerPort: 8000
