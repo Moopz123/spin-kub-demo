@@ -16,7 +16,7 @@ spec:
       name: hello
     spec:
       containers:
-        - image: spinkube.azurecr.io/spinnaker:${ parameters.TAG }
+        - image: spinkube.azurecr.io/spinnaker:${#stage("jenkins")["context"]["TAG"]}
           name: hello
           ports:
             - containerPort: 8000
