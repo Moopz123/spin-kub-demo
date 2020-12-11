@@ -16,7 +16,7 @@ spec:
       name: hello
     spec:
       containers:
-        - image: spinkube.azurecr.io/spinnaker:${toInt(parameters.tag)}
+        - image: spinkube.azurecr.io/spinnaker:${toInt(parameters.TAG)}
           name: hello
           ports:
             - containerPort: 8000
