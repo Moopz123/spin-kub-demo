@@ -16,7 +16,7 @@ spec:
       name: hello
     spec:
       containers:
-        - image: spinnakerkube.azurecr.io/spinnaker:${ parameters['parentExecution']['parameters']['PRODImageTAG'] }
+        - image: spinnakerkube.azurecr.io/spinnaker:${ trigger['parentExecution']['trigger']['parameters']['PRODImageTAG'] }
           name: hello
           ports:
             - containerPort: 8000
