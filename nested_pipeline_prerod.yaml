@@ -16,7 +16,7 @@ spec:
       name: hello
     spec:
       containers:
-        - image: spinnakerkube.azurecr.io/spinnaker:${ trigger.parentExecution.Pre-PRODImageTAG }
+        - image: spinnakerkube.azurecr.io/spinnaker:${ parameters.Pre-PRODImageTAG }
           name: hello
           ports:
             - containerPort: 8000
