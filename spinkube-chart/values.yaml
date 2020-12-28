@@ -1,0 +1,47 @@
+replicaCount: 1
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 100%
+    maxUnavailable: 25%
+
+image:
+  repository: spinkube.azurecr.io/spinnaker
+  tag: ${ parameters.tag }
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name:
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  name: hello-world
+  type: LoadBalancer
+  externalPort: 80
+  internalPort: 8000
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
