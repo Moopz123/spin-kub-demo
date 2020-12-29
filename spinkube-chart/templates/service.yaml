@@ -4,6 +4,10 @@ metadata:
   name: {{ include "helloworld-chart.fullname" . }}
   labels:
     {{- include "helloworld-chart.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   type: {{ .Values.service.type }}
   ports:
