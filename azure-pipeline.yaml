@@ -1,0 +1,62 @@
+    
+trigger:
+  batch: true
+  paths:
+    include:
+      - parrot/azure-pipelines.deploy.yaml
+  branches:
+    include:
+      - master
+
+variables:
+  helmVersion: 3.0.2
+  containerRepository: parrot
+  containerRegistry: myaks86793016
+  imageTag: $(resources.pipeline.build.runName)
+  azuresubscription: AzureServiceConnection
+  rggroup: MyAKS-QA-Group
+  kubernetesCluster: MyAKS-QA
+
+stages:
+  - stage:
+    displayName: Deploy to QA
+    jobs:
+      - deployment: QA
+        displayName: Deploy to QA Environment
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: QA.default
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+
+                - task: HelmInstaller@1
+                  displayName: 'Install Helm'
+                  inputs:
+                    helmVersionToInstall: '$(helmVersion)'
+
+                - task: AzureCLI@2
+                  displayName: 'Add ACR to Helm Repository list'
+                  inputs:
+                    azureSubscription: '$(azuresubscription)'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: 'az acr helm repo add --name $(containerRegistry)'
+                    failOnStandardError: false
+
+                - task: HelmDeploy@0
+                  displayName: 'Helm Deploy'
+                  inputs:
+                    connectionType: 'Azure Resource Manager'
+                    azureSubscription: '$(azuresubscription)'
+                    azureResourceGroup: '$(rggroup)'
+                    kubernetesCluster: '$(kubernetesCluster)'
+                    useClusterAdmin: true
+                    namespace: 'default'
+                    command: 'upgrade'
+                    chartType: 'Name'
+                    chartName: '$(containerRegistry)/$(containerRepository)'
+                    releaseName: '$(containerRepository)'
+                    overrideValues: 'ingress.basedomain=$(aksHostDev),image.tag=$(imageTag),image.repository=$(containerRegistry).azurecr.io/$(containerRepository)'
