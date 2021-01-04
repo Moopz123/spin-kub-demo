@@ -8,6 +8,7 @@ trigger:
 
 parameters:
 - name: ImageTag
+  displayName: 'Image Tag'
   default: ''
   type: number
 
